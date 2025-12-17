@@ -13,10 +13,10 @@
 </head>
 <body>
 
-<h1>Ruleta ALAMOS</h1>
-<p>Pega los nombres (uno por línea)</p>
+<h1>RULETA</h1>
+<p>Pega los nombres</p>
 <textarea id="names"></textarea><br>
-<button id="spinBtn">Girar ruleta</button>
+<button id="spinBtn">Girar</button>
 
 <div id="winner"></div>
 
@@ -156,7 +156,7 @@ function animate(timestamp) {
     spinning = false;
     startTime = null;
     const winnerName = activeNames[lastWinnerIndex];
-    document.getElementById('winner').textContent = `El ganador es: ${winnerName}`;
+    document.getElementById('winner').textContent = `Ganador: ${winnerName}`;
 
     // Guardar historial
     winnersHistory.push(winnerName);
@@ -249,5 +249,6 @@ drawBaseWheel();
   </a>
 </footer>
 </html>
+
 
 
