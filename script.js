@@ -1,10 +1,10 @@
-// =====================
-// VARIABLES GLOBALES
-// =====================
 const canvas = document.getElementById('wheel');
 const ctx = canvas.getContext('2d');
 const center = canvas.width / 2;
 
+// =====================
+// ESTADO
+// =====================
 let originalNames = [];
 let activeNames = [];
 let lastWinnerIndex = null;
@@ -13,6 +13,7 @@ let winnersHistory = [];
 let angle = 0;
 let spinning = false;
 
+// animación
 let startTime = null;
 const duration = 3500;
 let startAngle = 0;
@@ -28,56 +29,54 @@ function secureRandomIndex(max) {
 }
 
 // =====================
-// FLECHA
+// FLECHA (LADO CORRECTO)
 // =====================
 function drawArrow() {
   const inside = center * 0.2;
+
   ctx.save();
-  ctx.fillStyle = '#000';
-  ctx.shadowColor = '#000';
-  ctx.shadowBlur = 6;
+  ctx.fillStyle = '#fff';
+  ctx.shadowColor = '#00f0ff';
+  ctx.shadowBlur = 15;
+
   ctx.beginPath();
   ctx.moveTo(center + (center - inside), center);
   ctx.lineTo(canvas.width - 10, center - 15);
   ctx.lineTo(canvas.width - 10, center + 15);
   ctx.closePath();
   ctx.fill();
+
   ctx.restore();
 }
 
 // =====================
-// RULETA BASE
+// RULETA BASE (RESET)
 // =====================
 function drawBaseWheel() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
   ctx.beginPath();
   ctx.arc(center, center, center - 10, 0, Math.PI * 2);
-  ctx.fillStyle = '#ddd';
+  ctx.fillStyle = '#222';
   ctx.fill();
   ctx.strokeStyle = '#555';
   ctx.lineWidth = 3;
   ctx.stroke();
+
   drawArrow();
 }
 
 // =====================
-// HISTORIAL
-// =====================
-function renderWinners() {
-  const list = document.getElementById('winnersList');
-  list.innerHTML = '';
-  winnersHistory.forEach(name => {
-    const li = document.createElement('li');
-    li.textContent = name;
-    list.appendChild(li);
-  });
-}
-
-// =====================
-// RULETA
+// RULETA CON NOMBRES
 // =====================
 function drawWheel() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  if (activeNames.length === 0) {
+    drawBaseWheel();
+    return;
+  }
+
   const slice = (Math.PI * 2) / activeNames.length;
 
   for (let i = 0; i < activeNames.length; i++) {
@@ -99,7 +98,22 @@ function drawWheel() {
     ctx.fillText(activeNames[i], center - 20, 5);
     ctx.restore();
   }
+
   drawArrow();
+}
+
+// =====================
+// HISTORIAL
+// =====================
+function renderWinners() {
+  const list = document.getElementById('winnersList');
+  list.innerHTML = '';
+
+  winnersHistory.forEach(name => {
+    const li = document.createElement('li');
+    li.textContent = name;
+    list.appendChild(li);
+  });
 }
 
 // =====================
@@ -122,58 +136,82 @@ function animate(timestamp) {
     spinning = false;
     startTime = null;
 
-    const winnerName = activeNames[lastWinnerIndex];
-    document.getElementById('winner').textContent = `Ganador: ${winnerName}`;
+    const winner = activeNames[lastWinnerIndex];
+    document.getElementById('winner').textContent = `Ganador: ${winner}`;
 
-    winnersHistory.push(winnerName);
+    winnersHistory.push(winner);
     renderWinners();
   }
 }
 
 // =====================
-// BOTÓN
+// CLICK EN RULETA
 // =====================
-document.getElementById('spinBtn').addEventListener('click', () => {
+canvas.addEventListener('click', () => {
   if (spinning) return;
 
   const text = document.getElementById('names').value.trim();
 
+  // 🔄 RESET TOTAL
   if (text === '') {
     originalNames = [];
     activeNames = [];
     lastWinnerIndex = null;
     winnersHistory = [];
+    angle = 0;
+
     document.getElementById('winner').textContent = '';
     renderWinners();
     drawBaseWheel();
     return;
   }
 
+  // PRIMER GIRO
   if (activeNames.length === 0) {
-    originalNames = text.split('\n').map(n => n.trim()).filter(Boolean);
+    originalNames = text
+      .split('\n')
+      .map(n => n.trim())
+      .filter(Boolean);
+
     activeNames = [...originalNames];
   }
 
+  // ELIMINAR GANADOR ANTERIOR
   if (lastWinnerIndex !== null) {
     activeNames.splice(lastWinnerIndex, 1);
     lastWinnerIndex = null;
   }
 
-  if (activeNames.length < 2) {
+if (activeNames.length < 2) {
     alert('Se necesitan al menos dos nombres');
-    drawBaseWheel();
-    return;
-  }
 
+    // 🔄 RESET TOTAL
+    originalNames = [];
+    activeNames = [];
+    lastWinnerIndex = null;
+    winnersHistory = [];
+    angle = 0;
+
+    document.getElementById('winner').textContent = '';
+    renderWinners();
+    drawBaseWheel();
+
+    return;
+}
+
+
+  // ELECCIÓN
   const slice = (Math.PI * 2) / activeNames.length;
   lastWinnerIndex = secureRandomIndex(activeNames.length);
 
+  // Giro natural con offset aleatorio dentro del segmento
   const offsetArray = new Uint32Array(1);
   crypto.getRandomValues(offsetArray);
   const intraOffset = (offsetArray[0] / 0xffffffff - 0.5) * slice * 0.8;
 
   const targetAngle =
-    (Math.PI * 2) - (lastWinnerIndex * slice + slice / 2 + intraOffset);
+    (Math.PI * 2) -
+    (lastWinnerIndex * slice + slice / 2 + intraOffset);
 
   startAngle = angle % (Math.PI * 2);
   finalAngle = targetAngle + 5 * Math.PI * 2;
@@ -197,3 +235,4 @@ document.addEventListener('visibilitychange', () => {
 // INICIO
 // =====================
 drawBaseWheel();
+

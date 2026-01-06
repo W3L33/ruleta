@@ -2,45 +2,35 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Ruleta</title>
-  <style>
-    body { font-family: Arial, sans-serif; background:#f4f6f8; text-align:center; }
-    textarea { width:300px; height:120px; }
-    button { padding:10px 20px; font-size:16px; margin-top:10px; cursor:pointer; }
-    #winner { height:40px; margin-top:20px; font-size:22px; font-weight:bold; }
-    canvas { margin-top:20px; background:#fff; }
-  </style>
+  <title>Ruleta Neón</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<h1>RULETA</h1>
-<p>Pega los nombres</p>
-<textarea id="names"></textarea><br>
-<button id="spinBtn">Girar</button>
+<!-- CANVAS DE FONDO -->
+<canvas id="bg"></canvas>
 
-<div id="winner"></div>
+<div class="container">
+  <h1>Nombres</h1>
+  <textarea id="names" class="glass"></textarea><br>
+  <div id="winner"></div>
 
-<div style="display:flex; justify-content:center; gap:30px; margin-top:20px;">
-  <div style="width:200px; text-align:left; background:#fff; padding:10px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,.15);">
-    <h3>🏆 Ganadores</h3>
-    <ol id="winnersList" style="padding-left:20px;"></ol>
+  <div class="content">
+    <div class="glass winners-box">
+      <h3>Ganadores</h3>
+      <ol id="winnersList"></ol>
+    </div>
+
+    <canvas id="wheel" width="400" height="400"></canvas>
   </div>
-  <canvas id="wheel" width="400" height="400"></canvas>
 </div>
 
-<footer style="margin-top:30px; font-size:14px; color:#555;">
-  By 
-  <a href="https://w3l33.github.io/" 
-     style="color:#0077cc; text-decoration:none; font-weight:bold;">
-     WeLee
-  </a>
+<footer>
+  By <a href="https://w3l33.github.io/">WeLee</a>
 </footer>
 
-<!-- JS externo -->
+<script src="background.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
-
-
-
 

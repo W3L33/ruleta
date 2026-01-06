@@ -1,0 +1,112 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 10;
+  font-family: Arial, sans-serif;
+  color: #fff;
+  overflow-x: hidden;
+font-size: 14px;
+}
+
+/* fondo animado */
+#bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+}
+
+/* layout */
+.container {
+  text-align: center;
+  padding-top: 20px;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+/* glassmorphism */
+.glass {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
+  backdrop-filter: blur(10px);
+  border-radius: 14px;
+  box-shadow: 0 0 25px rgba(0,240,255,0.25);
+}
+
+/* textarea */
+textarea {
+  width: 300px;
+  height: 120px;
+  padding: 10px;
+  color: #fff;
+  resize: none;
+}
+
+/* boton */
+button {
+  margin-top: 10px;
+  padding: 10px 25px;
+  font-size: 16px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, #00f0ff, #8a2be2);
+  color: white;
+  box-shadow: 0 0 15px rgba(0,240,255,0.6);
+}
+
+/* ganador */
+#winner {
+  margin-top: 20px;
+  height: 40px;              /* espacio reservado SIEMPRE */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 40px;
+  font-weight: bold;
+  text-shadow: 0 0 5px #00f0ff;
+}
+
+
+/* ganadores */
+.winners-box {
+  width: 200px;
+  padding: 10px;/Users/welee-mp/Desktop/styles.css
+  text-align: left;
+}
+
+.winners-box ol {
+  padding-left: 20px;
+}
+
+/* ruleta */
+#wheel {
+  background: transparent;
+  border-radius: 50%;
+  box-shadow:
+    0 0 30px rgba(0,240,255,0.5),
+    inset 0 0 20px rgba(0,0,0,0.8);
+}
+
+footer {
+  margin-top: 30px;
+  font-size: 14px;
+  text-align: center;
+}
+
+footer a {
+  color: #00f0ff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
