@@ -2,9 +2,6 @@ const canvas = document.getElementById('wheel');
 const ctx = canvas.getContext('2d');
 const center = canvas.width / 2;
 
-// =====================
-// ESTADO
-// =====================
 let originalNames = [];
 let activeNames = [];
 let lastWinnerIndex = null;
@@ -19,18 +16,12 @@ const duration = 3500;
 let startAngle = 0;
 let finalAngle = 0;
 
-// =====================
-// RANDOM CRIPTOGRÁFICO
-// =====================
+
 function secureRandomIndex(max) {
   const array = new Uint32Array(1);
   crypto.getRandomValues(array);
   return array[0] % max;
 }
-
-// =====================
-// FLECHA (LADO CORRECTO)
-// =====================
 function drawArrow() {
   const inside = center * 0.2;
 
@@ -48,10 +39,6 @@ function drawArrow() {
 
   ctx.restore();
 }
-
-// =====================
-// RULETA BASE (RESET)
-// =====================
 function drawBaseWheel() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -65,10 +52,6 @@ function drawBaseWheel() {
 
   drawArrow();
 }
-
-// =====================
-// RULETA CON NOMBRES
-// =====================
 function drawWheel() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -101,10 +84,6 @@ function drawWheel() {
 
   drawArrow();
 }
-
-// =====================
-// HISTORIAL
-// =====================
 function renderWinners() {
   const list = document.getElementById('winnersList');
   list.innerHTML = '';
@@ -115,10 +94,6 @@ function renderWinners() {
     list.appendChild(li);
   });
 }
-
-// =====================
-// ANIMACIÓN
-// =====================
 function animate(timestamp) {
   if (!spinning) return;
   if (!startTime) startTime = timestamp;
@@ -143,16 +118,10 @@ function animate(timestamp) {
     renderWinners();
   }
 }
-
-// =====================
-// CLICK EN RULETA
-// =====================
 canvas.addEventListener('click', () => {
   if (spinning) return;
 
   const text = document.getElementById('names').value.trim();
-
-  // 🔄 RESET TOTAL
   if (text === '') {
     originalNames = [];
     activeNames = [];
@@ -166,7 +135,6 @@ canvas.addEventListener('click', () => {
     return;
   }
 
-  // PRIMER GIRO
   if (activeNames.length === 0) {
     originalNames = text
       .split('\n')
@@ -175,8 +143,6 @@ canvas.addEventListener('click', () => {
 
     activeNames = [...originalNames];
   }
-
-  // ELIMINAR GANADOR ANTERIOR
   if (lastWinnerIndex !== null) {
     activeNames.splice(lastWinnerIndex, 1);
     lastWinnerIndex = null;
@@ -184,8 +150,6 @@ canvas.addEventListener('click', () => {
 
 if (activeNames.length < 2) {
     alert('Se necesitan al menos dos nombres');
-
-    // 🔄 RESET TOTAL
     originalNames = [];
     activeNames = [];
     lastWinnerIndex = null;
@@ -199,12 +163,8 @@ if (activeNames.length < 2) {
     return;
 }
 
-
-  // ELECCIÓN
   const slice = (Math.PI * 2) / activeNames.length;
   lastWinnerIndex = secureRandomIndex(activeNames.length);
-
-  // Giro natural con offset aleatorio dentro del segmento
   const offsetArray = new Uint32Array(1);
   crypto.getRandomValues(offsetArray);
   const intraOffset = (offsetArray[0] / 0xffffffff - 0.5) * slice * 0.8;
@@ -220,19 +180,11 @@ if (activeNames.length < 2) {
   spinning = true;
   requestAnimationFrame(animate);
 });
-
-// =====================
-// VISIBILIDAD
-// =====================
 document.addEventListener('visibilitychange', () => {
   if (document.hidden && spinning) {
     spinning = false;
     startTime = null;
   }
 });
-
-// =====================
-// INICIO
-// =====================
 drawBaseWheel();
 
