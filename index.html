@@ -1,34 +1,35 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dados</title>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <title>Ruleta Neón</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-
+<!-- CANVAS DE FONDO -->
 <canvas id="bg"></canvas>
 
-<h1 class="titulo-grande">Dados</h1>
+<div class="container">
+  <h1>Nombres</h1>
+  <textarea id="names" class="glass"></textarea><br>
+  <div id="winner"></div>
 
-<div id="cantidadDados">
-    <label><input type="radio" name="dados" value="1" checked> 1</label>
-    <label><input type="radio" name="dados" value="2"> 2</label>
+  <div class="content">
+    <div class="glass winners-box">
+      <h3>Ganadores</h3>
+      <ol id="winnersList"></ol>
+    </div>
+
+    <canvas id="wheel" width="400" height="400"></canvas>
+  </div>
 </div>
 
-<div id="configuracion" class="configuracion"></div>
-<div id="escena" class="escena"></div>
-
-<script src="script.js"></script>
-<script src="background.js"></script>
-
 <footer>
-    By 
-    <a href="https://w3l33.github.io/" target="_blank">
-        WeLee
-    </a>
+  By <a href="https://w3l33.github.io/">WeLee</a>
 </footer>
+
+<script src="background.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
